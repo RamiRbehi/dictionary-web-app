@@ -1,3 +1,63 @@
+* #root {
+  padding: 30px 280px;
+  background-color: var(--bg-color);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 768px) {
+  * #root {
+      padding: 30px 50px;
+  }
+}
+@media only screen and (max-width: 375px) {
+  * #root {
+      padding: 30px 20px;
+  }
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-VariableFont_slnt,wght.woff2')
+    format('woff2-variations');
+  font-style: normal;
+  font-weight: 100 900;
+  font-variation-settings: 'slnt' -10 0;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora/Lora-VariableFont_wght.woff2')
+    format('woff2-variations');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora/Lora-Italic-VariableFont_wght.woff2')
+    format('woff2-variations');
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Inconsolata';
+  src: url('/fonts/Inconsolata/Inconsolata-VariableFont_wdth,wght.woff2')
+    format('woff2-variations');
+  font-style: normal;
+  font-weight: 200 900;
+  font-stretch: 20% 200%;
+  font-display: optional;
+}
+/* h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Inconsolata', monospace;
+} */
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;
