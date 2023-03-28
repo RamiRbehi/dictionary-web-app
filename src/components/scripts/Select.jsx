@@ -1,60 +1,20 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import MyOtherComponent from '../MyOtherComponent';
 
-const Container = styled.div`
-    font-family: ${(props) => props.fontFamily};
-`;
-
-const DropdownButton = styled.div`
-    position: relative;
-    display: flex;
-`;
-
-const Button = styled.button`
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 5px 20px;
-    font-weight: 600;
-    color: ${(props) => (props.isActive ? 'var(--light-text-color)' : 'var(--dark-text-color)')};
-`;
-const ArrowIcon = styled.img`
-    /* padding-left: 10px; */
-`;
-
-
-
-const DropdownContent = styled.div`
-    display: ${(props) => (props.open ? 'block' : 'none')};
-    width: 10vw;
-    position: absolute;
-    top: 35px;
-    right: 5px;
-    z-index: 2;
-    background-color: var(--light-background-color);
-    box-shadow: 0px 5px 20px 1px hsl(0,0%,51%);
-    /* background-color: ${(props) => (props.isActive ? 'var(--dark-background-color)' : 'var(--light-background-color)')}; */
-    background-color: ${(props) => props.backgroundColor};
-`;
-
-const DropdownOptions = styled.a`
-    display: block;
-    padding: 10px 12px;
-    text-decoration: none;
-    color: #000;
-    cursor: pointer;
-`;
-
-const Select = ({setFont, isActive, isDarkMode}) => {
+const Select = ({setFont, isDarkMode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Serif')
-    const [shadowColor, setShadowColor] = useState('var(--shadow-box)');
+    // const [shadowColor, setShadowColor] = useState('var(--shadow-box)');
 
     useEffect(() => {
-      setShadowColor(isActive ? 'var(--purple)' : 'var(--shadow-box)')
-    }, [isActive])
+      const dropdownContent = document.querySelector('.dropdown-content');
+      dropdownContent.style.backgroundColor = isDarkMode ? '#333' : '#fff';
+      dropdownContent.style.boxShadow = isDarkMode ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none';
+    }, [isDarkMode]);
+    // useEffect(() => {
+    //   setShadowColor(isActive ? 'var(--purple)' : 'var(--shadow-box)')
+    // }, [isActive])
 
     // useEffect(() => {
     //   const root = document.documentElement;
@@ -81,14 +41,11 @@ const Select = ({setFont, isActive, isDarkMode}) => {
   return (
     <Container>
       <DropdownButton>
-        <Button isActive={isDarkMode} onClick={() => setIsOpen(!isOpen)}>
+        <Button onClick={() => setIsOpen(!isOpen)}>
             {selectedOption || 'serif'}
         <ArrowIcon src='/images/icon-arrow-down.svg'/>
         </Button>
-        <DropdownContent open={isOpen} isActive={isDarkMode}
-          backgroundColor={isActive ? 'var(--dark-background-color)' : 'var(--light-background-color)'}
-          style={{boxShadow: `0px 5px 20px 1px ${shadowColor}`}}
-        > 
+        <DropdownContent className="dropdown-content" open={isOpen}> 
           {fonts.map((font) => (
             <DropdownOptions 
             key={font.id}
@@ -102,5 +59,58 @@ const Select = ({setFont, isActive, isDarkMode}) => {
     </Container>
   )
 }
+
+const Container = styled.div`
+    font-family: ${(props) => props.fontFamily};
+`;
+
+const DropdownButton = styled.div`
+    position: relative;
+    display: flex;
+`;
+
+const Button = styled.button`
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 5px 20px;
+    font-weight: 600;
+    color: ${(props) => (props.isActive ? 'var(--light-text-color)' : 'var(--dark-text-color)')};
+`;
+const ArrowIcon = styled.img`
+    /* padding-left: 10px; */
+`;
+
+
+const DropdownContent = styled.div`
+  display: ${(props) => (props.open ? 'block' : 'none')};
+  width: 10vw;
+  position: absolute;
+  top: 40px;
+  right: 5px;
+  z-index: 2;
+  /* background-color: var(--light-background-color); */
+  /* box-shadow: 0px 5px 20px 1px hsl(0,0%,51%); */
+  /* background-color: ${(props) => (props.isActive ? 'var(--dark-background-color)' : 'var(--light-background-color)')}; */
+  /* background-color: ${(props) => props.backgroundColor}; */
+  /* box-shadow: ${(props) => (props.isDarkMode ? 'var(--purple)' : 'var(--primary-shadow-box)')}; */
+  /* background-color: ${(props) => (props.isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)')}; */
+
+  @media only screen and (max-width: 768px) {
+    width: 15vw;
+  }
+
+  @media only screen and (max-width: 375px) {
+    width: 26vw;
+  }
+`;
+
+const DropdownOptions = styled.a`
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+`;
 
 export default Select

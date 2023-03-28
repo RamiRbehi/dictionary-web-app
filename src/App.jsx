@@ -1,10 +1,8 @@
-import MyOtherComponent from './components/MyOtherComponent'
 import Navbar from './components/Navbar';
 import "./App.css"
 import { useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import Dictionary from './components/Dictionary';
-import Error from './components/Error';
 
 // const lightTheme = {
 //   /* light-mode */
@@ -64,11 +62,12 @@ const GlobalStyles = createGlobalStyle`
     --dark-background-color: hsl(0,0%, 2%);
     --light-text-color: hsl(0,0%, 2%);
     --secondary-text-color: hsl(0, 0%, 51%);
-    --shadow-box: hsl(0, 0%, 51%);
+    --primary-shadow-box: hsl(0, 0%, 51%);
     --Input-bg: hsl(0, 0%, 91%);
     --dark-text-color: hsl(0,0%,100%);
     --background-color: var(--light-background-color);
     --text-color: var(--light-text-color);
+    --shadow-box: var(--primary-shadow-box);
     --purple: hsl(274,82%,60%);
     --redish: hsl(0,100%,66%);
   }
@@ -89,8 +88,6 @@ function App() {
       <GlobalStyles/>
       <Navbar setFont={setFont} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
       <Dictionary font={font}/>
-      {/* <Error/> */}
-      {/* <MyOtherComponent font={font} isDarkMode={isDarkMode}/> */}
     </div>
     
   );

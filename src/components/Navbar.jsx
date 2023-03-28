@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Select from './scripts/Select'
 import "../App.css"
@@ -30,7 +30,12 @@ const NightMode = styled.div`
 `
 
 
-const Navbar = ({setFont, isDarkMode, setIsDarkMode}) => {
+const Navbar = ({setFont}) => {
+
+    const toggleDarkMode = () => {
+        setIsDarkMode(!isDarkMode);
+      };
+
   return (
     <Container>
             <Left>
@@ -38,10 +43,10 @@ const Navbar = ({setFont, isDarkMode, setIsDarkMode}) => {
             </Left>
             <Right>
                 <SelectContainer>
-                    <Select setFont={setFont} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
+                    <Select setFont={setFont} isDarkMode={isDarkMode}/>
                 </SelectContainer>
                 <NightMode>
-                    <Toggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
+                    <Toggle isDarkMode={isDarkMode}/>
                 </NightMode>
             </Right>
     </Container>
