@@ -11,6 +11,7 @@ const Dictionary = ({font}) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [audioError, setAudioError] = useState(false);
+    const [isEmptyInput, setIsEmptyInput] = useState(false);
 
     useEffect(() => {
         const fetchDefaultWord = async () => {
@@ -29,6 +30,10 @@ const Dictionary = ({font}) => {
 
     const handleSearch = async (event) => {
         event.preventDefault();
+        if (word === '') {
+            setIsEmptyInput(false);
+            return;
+        }
         setLoading(true);
         setError(null);
         setAudioError(false);
@@ -65,14 +70,20 @@ const Dictionary = ({font}) => {
   return (
     <Container style={{fontFamily: font }}>
         <Form onSubmit={handleSearch}>
-            <Input style={{fontFamily: font }}
+            <Input style={{fontFamily: font,
+                border: isEmptyInput ? 'solid 1px var(--redish)' : 'solid 1px var(--purple)'
+                }}
                  placeholder='Search for any word...'
                  value={word}
-                 onChange={(e) => setWord(e.target.value)}
+                 onChange={(e) => {
+                    setWord(e.target.value)
+                    setIsEmptyInput(true)
+                    }}
                  />
             <SearchIcon src='/images/icon-search.svg'
                 onClick={handleSearch}
                 />
+                {isEmptyInput && <ErrorMessage>Whoops, can't be empty...</ErrorMessage>}
         </Form>
 
     {loading && <div>Loading...</div>}
@@ -87,7 +98,7 @@ const Dictionary = ({font}) => {
             </Left>
             <Right>
                     <AudioIcon  ref={svgRef} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} width="75" height="75" viewBox="0 0 75 75" src='/images/icon-play.svg' onClick={handlePlayAudio}>
-                        <g  fill-rule="evenodd">
+                        <g  fillRule="evenodd" fill='hsl(274,82%,60%)'>
                             <circle cx="37.5" cy="37.5" r="37.5" opacity=".25"/>
                             <path d="M29 27v21l21-10.5z"/>
                         </g>
@@ -150,7 +161,11 @@ const Input = styled.input`
     padding-left: 10px;
     border-radius: 10px;
     background-color: var(--Input-bg);
-    border: solid 1px var(--purple);
+    /* border: solid 1px var(--purple); */
+
+    &:focus{
+        border: solid 1px var(--purple);
+    }
 `
 const SearchIcon = styled.img`
     position: absolute;
@@ -259,6 +274,9 @@ const Source = styled.a`
 `
 const NewWindowIcon = styled.img`
     width: 1.5%;
+`
+const ErrorMessage = styled.span`
+    color: var(--redish);
 `
 
 export default Dictionary

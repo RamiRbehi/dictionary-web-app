@@ -30,11 +30,11 @@ const NightMode = styled.div`
 `
 
 
-const Navbar = ({setFont}) => {
+const Navbar = ({setFont, isDarkMode}) => {
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(!isDarkMode);
-      };
+    // const toggleDarkMode = () => {
+    //     setIsDarkMode(!isDarkMode);
+    //   };
 
   return (
     <Container>
