@@ -1,27 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
+import { DarkMode } from '../DarkMode';
+import { ThemeContext } from '../ThemeContext';
 
 const Toggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const {isDarkMode, toggleDarkMode} = useContext(ThemeContext);
 
-  const handleClick = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const LightTheme = {
+    lightBackgroundColor: 'var(--background-color)',
+    lightColor: 'var(--text-color)',
+    moonColor: 'hsl(0, 0%, 51%)'
+  }
+  const DarkTheme = {
+    darkBackgroundColor: 'var(--dark-background-color)',
+    darkColor: 'var(--dark-text-color)',
+    moonColor: 'hsl(274, 82%, 60%)'
+  }
 
-  useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--background-color', isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)');   
-    root.style.setProperty('--text-color' , isDarkMode ? 'var(--dark-text-color)' : 'var(--text-color)');
-    root.style.setProperty('--moon-icon-stroke-color', isDarkMode ? 'var(--purple)' : '#838383');
-  }, [isDarkMode])
+  // const handleClick = () => {
+  //   setIsDarkMode(!isDarkMode);
+  // };
+
+  // useEffect(() => {
+  //   const root = document.documentElement;
+  //   root.style.setProperty('--background-color', isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)');   
+  //   root.style.setProperty('--text-color' , isDarkMode ? 'var(--dark-text-color)' : 'var(--text-color)');
+  //   root.style.setProperty('--moon-icon-stroke-color', isDarkMode ? 'var(--purple)' : 'hsl(0, 0%, 51%)');
+  // }, [isDarkMode])
 
   return (
-    <Container>
-    <ToggleWrapper isActive={isDarkMode} onClick={handleClick}>
-      <Circle isActive={isDarkMode}/>
+    <Container theme={{...LightTheme, ...(isDarkMode && DarkTheme)}}>
+    <ToggleWrapper 
+    isActive={isDarkMode} 
+      onClick={toggleDarkMode}
+    >
+      <Circle
+       isActive={isDarkMode}
+      />
     </ToggleWrapper>
-    <MoonIcon src='/images/icon-moon.svg' width="22" height="22" viewBox="0 0 22 22">
-      <path fill="none" stroke="var(--moon-icon-stroke-color)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z"/>
+    {isDarkMode && <DarkMode/>}
+    <MoonIcon theme={{...LightTheme, ...(isDarkMode && DarkTheme)}}
+       src='/images/icon-moon.svg' width="22" height="22" viewBox="0 0 22 22">
+      <path fill="none" stroke="hsl(0, 0%, 51%)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z"/>
     </MoonIcon>   
     </Container>
   )
@@ -32,6 +52,7 @@ const Container = styled.div`
   gap: 15px;
 `
 const MoonIcon = styled.svg`
+  path{stroke: ${({theme}) => theme.moonColor};}
 `
 const ToggleWrapper = styled.div`
   width: 60px;

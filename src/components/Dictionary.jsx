@@ -1,17 +1,28 @@
 import axios from 'axios'
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import Error from './Error'
+import { ThemeContext } from './ThemeContext'
 
 const Dictionary = ({font}) => {
+    const {isDarkMode} = useContext(ThemeContext);
     const [word, setWord] = useState("keyboard");
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [audioError, setAudioError] = useState(false);
     const [isEmptyInput, setIsEmptyInput] = useState(false);
+
+    const LightTheme = {
+        backgroundColor: 'var(--background-color)',
+        textColor: 'var(--text-color)'
+      }
+      const DarkTheme = {
+        backgroundColor: 'var(--dark-background-color)',
+        textColor: 'var(--dark-text-color)'
+      } 
 
     useEffect(() => {
         const fetchDefaultWord = async () => {
@@ -30,9 +41,11 @@ const Dictionary = ({font}) => {
 
     const handleSearch = async (event) => {
         event.preventDefault();
-        if (word === '') {
-            setIsEmptyInput(false);
+        if (word === "") {
+            setIsEmptyInput(true);
             return;
+        } else {
+            setIsEmptyInput(false);
         }
         setLoading(true);
         setError(null);
@@ -68,23 +81,25 @@ const Dictionary = ({font}) => {
         svgRef.current.querySelector('path').style.fill = 'hsl(274,82%,60%)';
     };
   return (
-    <Container style={{fontFamily: font }}>
+    <Container theme={{...LightTheme, ...(isDarkMode && DarkTheme)}} 
+        style={{fontFamily: font }}>
         <Form onSubmit={handleSearch}>
             <Input style={{fontFamily: font,
-                border: isEmptyInput ? 'solid 1px var(--redish)' : 'solid 1px var(--purple)'
+                borderColor: isEmptyInput ? 'hsl(0,100%,66%)' : 'hsl(274,82%,60%)'
                 }}
                  placeholder='Search for any word...'
                  value={word}
                  onChange={(e) => {
                     setWord(e.target.value)
-                    setIsEmptyInput(true)
+                    setIsEmptyInput(e.target.value === "")
                     }}
                  />
-            <SearchIcon src='/images/icon-search.svg'
-                onClick={handleSearch}
-                />
-                {isEmptyInput && <ErrorMessage>Whoops, can't be empty...</ErrorMessage>}
+            <SearchIcon src='/images/icon-search.svg'  width="18" height="18" viewBox="0 0 18 18"
+                onClick={handleSearch}>
+                    <path fill="none" stroke="#A445ED" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z"/>
+                </SearchIcon>
         </Form>
+                {isEmptyInput && <ErrorMessage>Whoops, can't be empty...</ErrorMessage>}
 
     {loading && <div>Loading...</div>}
     {error && <Error/>}
@@ -97,7 +112,11 @@ const Dictionary = ({font}) => {
             )}
             </Left>
             <Right>
-                    <AudioIcon  ref={svgRef} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} width="75" height="75" viewBox="0 0 75 75" src='/images/icon-play.svg' onClick={handlePlayAudio}>
+                    <AudioIcon  ref={svgRef}
+                     onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
+                      src='/images/icon-play.svg' width="75" height="75" viewBox="0 0 75 75"
+                        onClick={handlePlayAudio}>
                         <g  fillRule="evenodd" fill='hsl(274,82%,60%)'>
                             <circle cx="37.5" cy="37.5" r="37.5" opacity=".25"/>
                             <path d="M29 27v21l21-10.5z"/>
@@ -121,7 +140,7 @@ const Dictionary = ({font}) => {
                             ))}
                     <SynonymContainer>
                         <BodyM>Synonym</BodyM>
-                        <Synonyms>{data[0].meanings[0].synonyms}</Synonyms>
+                        <Synonyms>{data[0].meanings[0].synonyms.join(", ")}</Synonyms>
                     </SynonymContainer>    
                 </NounContainer>
                 <VerbContainer>
@@ -138,7 +157,9 @@ const Dictionary = ({font}) => {
                 <SourceContainer>
                     <SourceHeadingS>Source</SourceHeadingS>
                     <Source href={data[0].sourceUrls}>{data[0].sourceUrls}</Source>
-                    <NewWindowIcon src='/images/icon-new-window.svg'/>
+                    <NewWindowIcon src='/images/icon-new-window.svg' width="14" height="14" viewBox="0 0 14 14">
+                        <path fill="none" stroke="#838383" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.09 3.545H2.456A1.455 1.455 0 0 0 1 5v6.545A1.455 1.455 0 0 0 2.455 13H9a1.455 1.455 0 0 0 1.455-1.455V7.91m-5.091.727 7.272-7.272m0 0H9m3.636 0V5"/>
+                    </NewWindowIcon>
                 </SourceContainer>
             </DefinitionContainer>
     )}
@@ -160,14 +181,10 @@ const Input = styled.input`
     height: 40px;
     padding-left: 10px;
     border-radius: 10px;
-    background-color: var(--Input-bg);
-    /* border: solid 1px var(--purple); */
-
-    &:focus{
-        border: solid 1px var(--purple);
-    }
+    background-color: hsl(0, 0%, 91%);
+    border: solid 1px;
 `
-const SearchIcon = styled.img`
+const SearchIcon = styled.svg`
     position: absolute;
     bottom: 12px;
     right: 10px;
@@ -186,7 +203,7 @@ const WordTitle = styled.h1`
 `
 const Phonetic = styled.p`
     font-size: 20px;
-    color: var(--purple);
+    color: hsl(274,82%,60%);
 `
 const Right = styled.div`
     display: flex;
@@ -247,7 +264,7 @@ const SynonymContainer = styled.div`
 const Synonyms = styled.p`
     font-size: 18px;
     font-weight: 600;
-    color: var(--purple);
+    color: hsl(274,82%,60%);
 
     &:hover{
         text-decoration-line: underline;
@@ -272,11 +289,11 @@ const Source = styled.a`
     color: var(--secondary-text-color);
     cursor: pointer;
 `
-const NewWindowIcon = styled.img`
+const NewWindowIcon = styled.svg`
     width: 1.5%;
 `
 const ErrorMessage = styled.span`
-    color: var(--redish);
+    color: hsl(0,100%,66%);
 `
 
 export default Dictionary

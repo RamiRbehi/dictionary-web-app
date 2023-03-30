@@ -1,26 +1,22 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react';
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components';
+import { ThemeContext } from '../ThemeContext';
 
-const Select = ({setFont, isDarkMode }) => {
+const Select = ({setFont}) => {
+    const {isDarkMode} = useContext(ThemeContext);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Serif')
-    // const [shadowColor, setShadowColor] = useState('var(--shadow-box)');
 
-    useEffect(() => {
-      const dropdownContent = document.querySelector('.dropdown-content');
-      dropdownContent.style.backgroundColor = isDarkMode ? '#333' : '#fff';
-      dropdownContent.style.boxShadow = isDarkMode ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none';
-    }, [isDarkMode]);
-    // useEffect(() => {
-    //   setShadowColor(isActive ? 'var(--purple)' : 'var(--shadow-box)')
-    // }, [isActive])
-
-    // useEffect(() => {
-    //   const root = document.documentElement;
-    //   root.style.setProperty('--background-color', isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)') ;   
-    //   root.style.setProperty('--primary-text-color' , isDarkMode ? 'var(--dark-text-color)' : 'var(--text-color)')
-    // }, [isDarkMode])
+    const LightTheme = {
+      backgroundColor: 'hsl(0,0%,100%)',
+      textColor: 'var(--text-color)',
+      shadowColor: '0 0 20px 0 hsl(0, 0%, 51%)',
+    }
+    const DarkTheme = {
+      backgroundColor: 'var(--dark-background-color)',
+      textColor: 'var(--dark-text-color)',
+      shadowColor: '0 0 20px 0 hsl(274,82%,60%)',
+    } 
 
     const handleSelectFont = (fontFamily) => {
       setFont(fontFamily);
@@ -43,9 +39,12 @@ const Select = ({setFont, isDarkMode }) => {
       <DropdownButton>
         <Button onClick={() => setIsOpen(!isOpen)}>
             {selectedOption || 'serif'}
-        <ArrowIcon src='/images/icon-arrow-down.svg'/>
+        <ArrowIcon src='/images/icon-arrow-down.svg' width="14" height="8" viewBox="0 0 14 8">
+          <path fill="none" stroke="#A445ED" stroke-width="1.5" d="m1 1 6 6 6-6"/>
+        </ArrowIcon>
         </Button>
-        <DropdownContent className="dropdown-content" open={isOpen}> 
+        <DropdownContent theme={{...LightTheme, ...(isDarkMode && DarkTheme)}}
+         open={isOpen}> 
           {fonts.map((font) => (
             <DropdownOptions 
             key={font.id}
@@ -77,7 +76,7 @@ const Button = styled.button`
     font-weight: 600;
     color: ${(props) => (props.isActive ? 'var(--light-text-color)' : 'var(--dark-text-color)')};
 `;
-const ArrowIcon = styled.img`
+const ArrowIcon = styled.svg`
     /* padding-left: 10px; */
 `;
 
@@ -89,12 +88,9 @@ const DropdownContent = styled.div`
   top: 40px;
   right: 5px;
   z-index: 2;
-  /* background-color: var(--light-background-color); */
-  /* box-shadow: 0px 5px 20px 1px hsl(0,0%,51%); */
-  /* background-color: ${(props) => (props.isActive ? 'var(--dark-background-color)' : 'var(--light-background-color)')}; */
-  /* background-color: ${(props) => props.backgroundColor}; */
-  /* box-shadow: ${(props) => (props.isDarkMode ? 'var(--purple)' : 'var(--primary-shadow-box)')}; */
-  /* background-color: ${(props) => (props.isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)')}; */
+  background-color: ${({theme}) => theme.backgroundColor};
+  color: ${({theme}) => theme.textColor};
+  box-shadow: ${({theme}) => theme.shadowColor};
 
   @media only screen and (max-width: 768px) {
     width: 15vw;
@@ -109,7 +105,6 @@ const DropdownOptions = styled.a`
     display: block;
     padding: 10px 12px;
     text-decoration: none;
-    color: #000;
     cursor: pointer;
 `;
 
