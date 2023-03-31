@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { DarkMode } from '../DarkMode';
 import { ThemeContext } from '../ThemeContext';
@@ -17,17 +17,6 @@ const Toggle = () => {
     moonColor: 'hsl(274, 82%, 60%)'
   }
 
-  // const handleClick = () => {
-  //   setIsDarkMode(!isDarkMode);
-  // };
-
-  // useEffect(() => {
-  //   const root = document.documentElement;
-  //   root.style.setProperty('--background-color', isDarkMode ? 'var(--dark-background-color)' : 'var(--light-background-color)');   
-  //   root.style.setProperty('--text-color' , isDarkMode ? 'var(--dark-text-color)' : 'var(--text-color)');
-  //   root.style.setProperty('--moon-icon-stroke-color', isDarkMode ? 'var(--purple)' : 'hsl(0, 0%, 51%)');
-  // }, [isDarkMode])
-
   return (
     <Container theme={{...LightTheme, ...(isDarkMode && DarkTheme)}}>
     <ToggleWrapper 
@@ -40,7 +29,7 @@ const Toggle = () => {
     </ToggleWrapper>
     {isDarkMode && <DarkMode/>}
     <MoonIcon theme={{...LightTheme, ...(isDarkMode && DarkTheme)}}
-       src='/images/icon-moon.svg' width="22" height="22" viewBox="0 0 22 22">
+       src='/images/icon-moon.svg' width="22" height="22" viewBox="0 0 22 22" aria-label='moon-icon'>
       <path fill="none" stroke="hsl(0, 0%, 51%)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z"/>
     </MoonIcon>   
     </Container>

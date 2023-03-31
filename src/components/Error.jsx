@@ -10,8 +10,6 @@ const Container = styled.div`
     align-items: center;
     gap: 20px;
 `
-const SadEmoji = styled.img`
-`
 const ErrorTitle = styled.h1`
 `
 const ErrorDesc = styled.p`

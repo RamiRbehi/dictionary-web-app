@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-@media only screen and (max-width: 768px) {
+ @media only screen and (max-width: 768px) {
   * #root {
       padding: 30px 50px;
   }
@@ -17,7 +17,7 @@
   }
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter/Inter-VariableFont_slnt,wght.woff2')
     format('woff2-variations');
@@ -53,50 +53,4 @@
   font-weight: 200 900;
   font-stretch: 20% 200%;
   font-display: optional;
-}
-/* h1, h2, h3, h4, h5, h6, p {
-  font-family: 'Inconsolata', monospace;
-} */
-
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 } */
