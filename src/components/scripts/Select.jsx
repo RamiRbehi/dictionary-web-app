@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { ThemeContext } from '../ThemeContext';
 
@@ -6,6 +6,7 @@ const Select = ({setFont}) => {
     const {isDarkMode} = useContext(ThemeContext);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Serif')
+    const dropdownRef = useRef(null);
 
     const LightTheme = {
       backgroundColor: 'hsl(0,0%,100%)',
@@ -34,10 +35,23 @@ const Select = ({setFont}) => {
       setSelectedOption(value);
     }
 
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)){
+        setIsOpen(false);
+      }
+    };
+
+    useEffect(() => {
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, []);
+
   return (
     <Container>
       <DropdownButton>
-        <ButtonContainer onClick={() => setIsOpen(!isOpen)}>
+        <ButtonContainer onClick={() => setIsOpen(!isOpen)} ref={dropdownRef}>
         <Button>
             {selectedOption || 'serif'}
         </Button>
