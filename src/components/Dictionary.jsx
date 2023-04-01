@@ -5,6 +5,9 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import Error from './Error'
 import { ThemeContext } from './ThemeContext'
+import { DotWave } from '@uiball/loaders'
+
+
 
 const Dictionary = ({font}) => {
     const {isDarkMode} = useContext(ThemeContext);
@@ -105,7 +108,7 @@ const Dictionary = ({font}) => {
         </Form>
                 {isEmptyInput && <ErrorMessage>Whoops, can't be empty...</ErrorMessage>}
 
-    {loading && <div>Loading...</div>}
+    {loading && <DotWave size={47} speed={1} color="hsl(274,82%,60%)" />}
     {error && <Error/>}
     {data && (
         <WordContainer>
